@@ -2,23 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>hex</title>
+<title>hexbin maps - example 8</title>
 <meta charset="utf-8">
 
-
-<script src="../../libs/d3.js"></script>
-<script src="../../libs/d3-hexbin.js"></script>
-<script src="../../libs/topojson.v1.min.js"></script>
-<script src="../../libs/d3-array.js"></script>
-<script src="../../libs/d3-geo.js"></script>
-<script src="../../libs/d3-scale-chromatic.min.js"></script>
-
-<!-- <script src="//d3js.org/d3.v4.js"></script> -->
-<!-- <script src="//d3js.org/topojson.v1.min.js"></script> -->
-<!-- <script src="//d3js.org/d3-color.v1.min.js"></script> <!-- recommended --> 
-<!-- <script src="//d3js.org/d3-interpolate.v1.min.js"></script> <!-- recommended --> 
-<!-- <script src="//d3js.org/d3-scale-chromatic.v1.min.js"></script> -->
-<!-- <script src="//d3js.org/d3-hexbin.v0.2.min.js"></script> -->
+<script src="//d3js.org/d3.v4.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="//d3js.org/d3-color.v1.min.js"></script>  
+<script src="//d3js.org/d3-interpolate.v1.min.js"></script> 
+<script src="//d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="//d3js.org/d3-hexbin.v0.2.min.js"></script>
 
 <style type="text/css">
 
@@ -439,8 +431,8 @@ function ready(error, us, markets) {
 
 // Load data sources
 d3.queue()
-	.defer(d3.json, '../../data/us/us.json')
-	.defer(d3.json, '../../data/markets/markets_overall.json')
+	.defer(d3.json, 'data/us.json')
+	.defer(d3.json, 'data/markets_overall.json')
 	.await(ready);
 
 
@@ -526,8 +518,8 @@ function changeSelectedData() {
 
 	// Rebuild visual
 	d3.queue()
-		.defer(d3.json, '../../data/us/us.json')
-		.defer(d3.json, '../../data/markets/' + dataset) 
+		.defer(d3.json, 'data/us.json')
+		.defer(d3.json, 'data/' + dataset) 
 		.await(ready);
 
 } // changeSelectedData()
