@@ -468,8 +468,8 @@ function changeSelectedSize() {
 
 	// Rebuild visual
 	d3.queue()
-		.defer(d3.json, '../../data/us/us.json')
-		.defer(d3.json, '../../data/markets/' + dataset) 
+		.defer(d3.json, 'data/us.json')
+		.defer(d3.json, 'data/' + dataset) 
 		.await(ready);
 
 } // changeSelectedSize()
