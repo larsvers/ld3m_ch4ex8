@@ -5,7 +5,7 @@
 <title>11 Hexbin maps - example 8</title>
 <meta charset="utf-8">
 
-<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="//d3js.org/d3.v5.min.js"></script>
 <script src="//d3js.org/topojson.v1.min.js"></script>
 <script src="//d3js.org/d3-color.v1.min.js"></script>  
 <script src="//d3js.org/d3-interpolate.v1.min.js"></script> 
@@ -402,8 +402,7 @@ function prepData(topo) {
 /* Load and build steps */
 /* ==================== */
 
-function ready(error, us, markets) {
-	if (error) throw error;
+function ready(us, markets) {
 
 	// Reset the visual
 	d3.selectAll('.hex').remove();
@@ -435,11 +434,19 @@ function ready(error, us, markets) {
 
 } // ready()
 
+
 // Load data sources
-d3.queue()
-	.defer(d3.json, 'data/us.json')
-	.defer(d3.json, 'data/markets_overall.json')
-	.await(ready);
+var usData = d3.json('data/us.json').then(function(us) { return us; });
+var marketData = d3.json('data/markets_overall.json').then(function(markets) { return markets; });
+
+Promise.all([usData, marketData]).then(function(response) {
+
+	var usResolved = response[0];
+	var marketsResolved = response[1];
+
+	ready(usResolved, marketsResolved);
+
+});
 
 
 
@@ -473,10 +480,17 @@ function changeSelectedSize() {
 	hexRadius = this.value;
 
 	// Rebuild visual
-	d3.queue()
-		.defer(d3.json, 'data/us.json')
-		.defer(d3.json, 'data/' + dataset) 
-		.await(ready);
+	var usData = d3.json('data/us.json').then(function(us) { return us; });
+	var marketData = d3.json('data/' + dataset).then(function(markets) { return markets; });
+
+	Promise.all([usData, marketData]).then(function(response) {
+
+		var usResolved = response[0];
+		var marketsResolved = response[1];
+
+		ready(usResolved, marketsResolved);
+
+	});
 
 } // changeSelectedSize()
 
@@ -484,8 +498,8 @@ function changeSelectedSize() {
 /* Add slider for max value */
 /* ------------------------ */
 
-// Add a slider to chnage the color scales maximum value
-d3.select('input').on('input', function() {
+// Add a slider to change the color scales maximum value
+d3.select('input#change-scale-input').on('input', function() {
 
 	var newExponent = this.value;
 
@@ -497,7 +511,9 @@ d3.select('input').on('input', function() {
 
 	}).domain([maxCount, 1]);	
 
-	d3.selectAll('.hex').style('fill', function(d) { return d.datapoints === 0 ? 'none' : colorScale(d.datapoints); });
+	d3.selectAll('.hex').style('fill', function(d) { 
+		return d.datapoints === 0 ? 'none' : colorScale(d.datapoints); 
+	});
 
 	d3.select('#change-scale-value').html(newExponent);
 
@@ -533,10 +549,17 @@ function changeSelectedData() {
 	d3.select('#header-dataset').html(headerDataset);
 
 	// Rebuild visual
-	d3.queue()
-		.defer(d3.json, 'data/us.json')
-		.defer(d3.json, 'data/' + dataset) 
-		.await(ready);
+	var usData = d3.json('data/us.json').then(function(us) { return us; });
+	var marketData = d3.json('data/' + dataset).then(function(markets) { return markets; });
+
+	Promise.all([usData, marketData]).then(function(response) {
+
+		var usResolved = response[0];
+		var marketsResolved = response[1];
+
+		ready(usResolved, marketsResolved);
+
+	});
 
 } // changeSelectedData()
 
